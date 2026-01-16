@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=JetBrains+Mono&display=swap');
+
 :root {
   --body-background-color: #333333;
   --main-text-color: #ffffff;
@@ -30,8 +32,10 @@ body {
   height: 100%;
   background-color: var(--body-background-color);
   overflow: hidden;
-  font-family: "HarmonyOS_Regular", sans-serif;
+  font-family: "Inter", "JetBrains Mono", "HarmonyOS_Regular", sans-serif;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
+
 
 #app {
   width: 100vw;
@@ -48,15 +52,18 @@ body {
 // NMessage
 .n-message-container {
   top: 20px !important;
+
   .n-message-wrapper {
     border-radius: 25px;
     backdrop-filter: blur(20px);
+
     .n-message {
       padding: 12px 28px;
       border-radius: 25px;
       background-color: var(--main-background-light-color);
       color: var(--main-text-color);
-      .n-message__icon > * {
+
+      .n-message__icon>* {
         color: var(--main-text-color);
       }
     }
@@ -69,14 +76,18 @@ body {
   --n-bar-color: var(--main-text-color) !important;
   --n-tab-text-color-active: var(--main-text-color) !important;
   --n-tab-text-color-hover: var(--main-text-color) !important;
+
   .n-tabs-nav {
     height: 44px;
   }
+
   .n-tabs-pane-wrapper {
     height: 100%;
+
     .n-tab-pane {
       padding: 20px;
       box-sizing: border-box;
+
       &.no-padding {
         padding: 0;
       }
@@ -103,23 +114,28 @@ body {
   .n-modal-mask {
     backdrop-filter: blur(40px);
   }
+
   // n-dialog
   .n-dialog {
     border-radius: 8px;
     box-shadow: none;
     --n-icon-color: var(--main-text-color);
     --n-color: var(--main-background-light-color);
+
     .n-dialog__title {
       font-weight: bold;
       font-size: 18px;
+
       .n-dialog__icon {
         font-size: 24px;
         margin-right: 8px;
       }
     }
+
     .n-dialog__content {
       font-size: 15px;
     }
+
     .n-button {
       height: auto;
       padding: 9px 16px;
@@ -137,6 +153,7 @@ body {
       --n-color-hover: var(--main-background-hover-color);
     }
   }
+
   .n-modal {
     width: 60vw;
     max-width: 700px;
@@ -201,10 +218,12 @@ body {
   0% {
     opacity: 0;
   }
+
   30% {
     opacity: 0;
     transform: translateY(30px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);
@@ -215,10 +234,12 @@ body {
   0% {
     opacity: 0;
   }
+
   20% {
     opacity: 0;
     transform: translateY(-90px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(-140px);
@@ -230,6 +251,7 @@ body {
     filter: blur(calc(var(--blur) + 20px)) brightness(0.4);
     transform: scale(1.5);
   }
+
   to {
     filter: blur(var(--blur)) brightness(1);
     transform: scale(1.2);
@@ -240,9 +262,11 @@ body {
   0% {
     opacity: 0.8;
   }
+
   70% {
     opacity: 0.8;
   }
+
   100% {
     opacity: 0.2;
   }
@@ -252,9 +276,11 @@ body {
   0% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.1);
   }
+
   100% {
     transform: scale(1);
   }

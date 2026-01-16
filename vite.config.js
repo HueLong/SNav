@@ -55,6 +55,14 @@ export default defineConfig({
   server: {
     port: 5588,
     open: true,
+    proxy: {
+      '/api': {
+        target: 'https://orz.ai/api/v1/dailynews',
+        changeOrigin: true,
+        secure: false, // 忽略 SSL 证书错误
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
   },
   resolve: {
     // 配置路径别名

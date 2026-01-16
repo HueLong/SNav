@@ -17,6 +17,7 @@
         <WeatherTime />
         <SearchInp @contextmenu.stop />
         <AllFunc @contextmenu.stop />
+        <NewsCard class="main-news-card" @contextmenu.stop />
         <Footer />
         <!-- 状态切换 -->
         <Transition name="fade">
@@ -69,6 +70,7 @@ import WeatherTime from "@/components/WeatherTime.vue";
 import SearchInp from "@/components/SearchInput/SearchInp.vue";
 import AllFunc from "@/components/AllFunc/AllFunc.vue";
 import Footer from "@/components/Footer.vue";
+import NewsCard from "@/components/NewsCard.vue";
 
 const set = setStore();
 const status = statusStore();
@@ -208,6 +210,21 @@ onMounted(() => {
   }
   .tip {
     font-size: 20px;
+  }
+}
+
+.main-news-card {
+  position: absolute;
+  bottom: 60px; /* 改为底部，避免遮挡顶部时钟/搜索 */
+  right: 40px;
+  z-index: 100;
+  @media (max-width: 768px) {
+    right: 50%;
+    transform: translateX(50%);
+    bottom: 12vh;
+    width: auto; /* 由组件内部控制宽度 */
+    display: flex;
+    justify-content: center;
   }
 }
 </style>

@@ -30,8 +30,9 @@ const status = statusStore();
   width: 80%;
   height: 64vh;
   max-width: 1200px;
-  background-color: var(--main-background-light-color);
-  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   color: var(--main-text-color);
   border-radius: 8px;
   transition:

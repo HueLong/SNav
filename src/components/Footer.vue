@@ -74,6 +74,9 @@ const jumpTo = (url) => {
   width: 100%;
   color: var(--main-text-color);
   z-index: 1;
+  @media (max-width: 768px) {
+    display: none;
+  }
   .copyright {
     display: flex;
     align-items: center;

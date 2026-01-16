@@ -198,8 +198,9 @@ const changeEngine = () => {
     width: 100%;
     border-radius: 30px;
     color: var(--main-text-color);
-    background-color: var(--main-background-color);
+    background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     opacity: 1;
     animation: fade-up-in 0.7s cubic-bezier(0.37, 0.99, 0.36, 1);
     transition:
