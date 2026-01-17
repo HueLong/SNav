@@ -1,7 +1,7 @@
 <template>
   <Provider>
     <!-- 壁纸 -->
-    <Cover @loadComplete="loadComplete" />
+    <Cover ref="coverRef" @loadComplete="loadComplete" />
     <!-- 主界面 -->
     <Transition name="fade" mode="out-in">
       <main
@@ -51,7 +51,29 @@
             </div>
           </div>
         </Transition>
-      </main>
+      <!-- 壁纸切换按钮 (仅在首页显示) -->
+      <Transition name="fade">
+        <div
+          v-if="status.siteStatus === 'normal'"
+          class="wallpaper-control"
+          title="切换壁纸"
+          @click.stop="changeWallpaper"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 0 24 24"
+            width="24px"
+            fill="currentColor"
+          >
+            <path d="M0 0h24v24H0V0z" fill="none" />
+            <path
+              d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"
+            />
+          </svg>
+        </div>
+      </Transition>
+    </main>
       <div v-else id="loading">
         <img src="/icon/logo.png" alt="logo" class="logo" />
         <span class="tip">开发中</span>
@@ -75,6 +97,7 @@ import NewsCard from "@/components/NewsCard.vue";
 const set = setStore();
 const status = statusStore();
 const mainClickable = ref(false);
+const coverRef = ref(null);
 
 // 获取配置
 const welcomeText = import.meta.env.VITE_WELCOME_TEXT ?? "欢迎访问本站";
@@ -85,14 +108,25 @@ const mainContextmenu = (event) => {
   status.setSiteStatus("box");
 };
 
+// 切换壁纸
+const changeWallpaper = () => {
+  if (coverRef.value) {
+    coverRef.value.setBgUrl(true);
+    $message.success("壁纸切换中...", { duration: 1000 });
+  }
+};
+
 // 加载完成事件
 const loadComplete = () => {
   nextTick().then(() => {
+    // 仅在首次加载时显示欢迎语
+    if (!mainClickable.value) {
+      $message.info(getGreeting() + "，" + welcomeText, {
+        showIcon: false,
+        duration: 3000,
+      });
+    }
     mainClickable.value = true;
-    $message.info(getGreeting() + "，" + welcomeText, {
-      showIcon: false,
-      duration: 3000,
-    });
   });
 };
 
@@ -198,6 +232,31 @@ onMounted(() => {
         transform: scale(0.95);
       }
     }
+  }
+}
+.wallpaper-control {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  padding: 8px;
+  border-radius: 8px;
+  color: var(--main-text-color);
+  z-index: 100;
+  transition:
+    opacity 0.3s,
+    background-color 0.3s,
+    transform 0.3s;
+  &:hover {
+    backdrop-filter: blur(20px);
+    background-color: var(--main-background-light-color);
+  }
+  &:active {
+    transform: scale(0.95);
   }
 }
 #loading {

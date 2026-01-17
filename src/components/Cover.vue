@@ -2,6 +2,7 @@
   <div :class="status.siteStatus !== 'normal' ? 'cover focus' : 'cover'">
     <img
       v-show="status.imgLoadStatus"
+      :key="bgUrl"
       class="background"
       alt="background"
       :src="bgUrl"
@@ -31,30 +32,60 @@ const emit = defineEmits(["loadComplete"]);
 const bgRandom = Math.floor(Math.random() * 3 + 1);
 
 // 赋值壁纸
-const setBgUrl = () => {
+const setBgUrl = (isRefresh = false) => {
   const { backgroundType } = set;
+  let url = "";
+
   switch (backgroundType) {
     case 0:
-      bgUrl.value = `/background/bg${bgRandom}.jpg`;
+      url = `/background/bg${bgRandom}.jpg`;
       break;
     case 1: {
       const isMobile = window.innerWidth < 768;
-      bgUrl.value = `https://api.dujin.org/bing/${isMobile ? "m" : "1920"}.php`;
+      url = `https://www.yumus.cn/api/?brand=bing&ua=${
+        isMobile ? "m" : "pc"
+      }`;
       break;
     }
     case 2:
-      bgUrl.value = "https://api.aixiaowai.cn/gqapi/gqapi.php";
+      // 风景大片
+      url = "https://www.yumus.cn/api/?target=img&brand=360&type=3";
       break;
     case 3:
-      bgUrl.value = "https://api.aixiaowai.cn/api/api.php";
+      // 动漫卡通
+      url = "https://www.yumus.cn/api/?target=img&brand=360&type=5";
       break;
     case 4:
-      bgUrl.value = set.backgroundCustom;
+      // 4K专区
+      url = "https://www.yumus.cn/api/?target=img&brand=360&type=0";
+      break;
+    case 5:
+      // 美女模特
+      url = "https://www.yumus.cn/api/?target=img&brand=360&type=1";
+      break;
+    case 6:
+      // 爱情美图
+      url = "https://www.yumus.cn/api/?target=img&brand=360&type=2";
+      break;
+    case 7:
+      // 小清新
+      url = "https://www.yumus.cn/api/?target=img&brand=360&type=4";
+      break;
+    case 99:
+      url = set.backgroundCustom;
       break;
     default:
-      bgUrl.value = `/background/bg${bgRandom}.jpg`;
+      url = `/background/bg${bgRandom}.jpg`;
       break;
   }
+
+  // 如果是 API 地址，添加时间戳参数以防止缓存
+  if (isRefresh && url.includes("http")) {
+    const separator = url.includes("?") ? "&" : "?";
+    url = `${url}${separator}t=${new Date().getTime()}`;
+  }
+
+  bgUrl.value = url;
 };
 
 // 图片加载完成
@@ -87,6 +118,10 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   clearTimeout(imgTimeout.value);
+});
+
+defineExpose({
+  setBgUrl,
 });
 </script>
 

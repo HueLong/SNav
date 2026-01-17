@@ -6,7 +6,7 @@ const useSetDataStore = defineStore("setData", {
       // 主题类别
       themeType: "light",
       // 壁纸类别
-      // 0 本地 / 1 必应 / 2 随机风景 / 3 随机动漫 / 4 自定义
+      // 0 本地 / 1 必应 / 2 风景 / 3 动漫 / 4 4K / 5 美女 / 6 爱情 / 7 小清新 / 99 自定义
       backgroundType: 2,
       backgroundCustom: "",
       // 壁纸遮罩

@@ -35,10 +35,10 @@
                   </n-button>
                 </Transition>
                 <n-button strong secondary @click="customCoverModal = true">
-                  <template v-if="backgroundType === 4" #icon>
+                  <template v-if="backgroundType === 99" #icon>
                     <SvgIcon iconName="icon-confirm" />
                   </template>
-                  {{ backgroundType === 4 ? "已开启自定义" : "自定义" }}
+                  {{ backgroundType === 99 ? "已开启自定义" : "自定义" }}
                 </n-button>
               </n-space>
             </div>
@@ -295,6 +295,10 @@ const backgroundTypeArr = [
   { name: "每日必应", tip: "必应每日一图，每天更新" },
   { name: "随机风景", tip: "随机风景图，随机更换" },
   { name: "随机动漫", tip: "随机二次元图，随机更换" },
+  { name: "4K 专区", tip: "4K 专区，随机更换" },
+  { name: "美女模特", tip: "美女模特，随机更换" },
+  { name: "爱情美图", tip: "爱情美图，随机更换" },
+  { name: "小清新", tip: "小清新，随机更换" },
 ];
 
 // 主题类别
@@ -355,7 +359,7 @@ const timeStyleOptions = [
 // 自定义壁纸
 const setCustomCover = () => {
   if (identifyInput(customCoverUrl.value) === "url") {
-    backgroundType.value = 4;
+    backgroundType.value = 99;
     backgroundCustom.value = customCoverUrl.value;
     customCoverModal.value = false;
     $message.error("已切换为自定义壁纸，刷新后生效");
