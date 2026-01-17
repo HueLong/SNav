@@ -27,18 +27,7 @@
       </div>
 
       <div class="card-header">
-        <h3>🔥 今日热榜</h3>
-        <div class="tabs">
-          <span
-            v-for="type in sources"
-            :key="type.value"
-            :class="{ active: currentType === type.value }"
-            @click.stop="changeSource(type.value)"
-            :title="type.name"
-          >
-            {{ type.shortName }}
-          </span>
-        </div>
+        <h3>🔥 {{ currentSourceName }} 热榜</h3>
       </div>
 
       <div class="content-area">
@@ -67,12 +56,26 @@
           </a>
         </div>
       </div>
+      
+      <!-- 底部 Dock 栏 -->
+      <div class="bottom-dock">
+         <img 
+           v-for="source in sources" 
+           :key="source.value"
+           :src="source.icon" 
+           :alt="source.name"
+           :title="source.name"
+           class="dock-icon"
+           :class="{ active: currentType === source.value }"
+           @click.stop="changeSource(source.value)"
+         />
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 
 const loading = ref(true);
 const isError = ref(false);
@@ -89,15 +92,38 @@ const carouselIndex = ref(0);
 let hoverTimer = null;
 let carouselTimer = null;
 
+// https://github.com/orz-ai/hot_news
 const sources = [
-  { name: '微博', value: 'wb', shortName: 'WB' },
-  { name: '知乎', value: 'zhihu', shortName: 'ZH' },
-  { name: '少数派', value: 'sspai', shortName: 'SS' },
-  { name: 'IT之家', value: 'it', shortName: 'IT' },
-  { name: '虎扑', value: 'hupu', shortName: 'HP' },
-  { name: 'V2EX', value: 'v2ex', shortName: 'V2' },
-  { name: '36氪', value: '36kr', shortName: '36K' },
-  { name: '哔哩哔哩', value: 'bilibili', shortName: 'Bili' }
+  { 
+    name: '微博', 
+    value: 'wb', 
+    icon: 'https://cdn.simpleicons.org/sinaweibo/E6162D' 
+  },
+  { 
+    name: '知乎', 
+    value: 'zhihu', 
+    icon: 'https://cdn.simpleicons.org/zhihu/0084FF' 
+  },
+  { 
+    name: '少数派', 
+    value: 'sspai', 
+    icon: 'https://cdn.simpleicons.org/sspai/D71A1B' 
+  },
+  { 
+    name: 'IT之家', 
+    value: 'it', 
+    icon: 'https://cdn.simpleicons.org/rss/F26522' 
+  },
+  { 
+    name: 'B站', 
+    value: 'bilibili', 
+    icon: 'https://cdn.simpleicons.org/bilibili/FB7299' 
+  },
+  { 
+    name: '36氪', 
+    value: '36kr', 
+    icon: 'https://img.icons8.com/ios-filled/50/4a90e2/news.png' 
+  }
 ];
 
 const typeMap = {
@@ -105,11 +131,14 @@ const typeMap = {
   zhihu: 'zhihu',
   sspai: 'sspai',
   it: 'ithome',
-  hupu: 'hupu',
-  v2ex: 'v2ex',
   '36kr': '36kr',
   bilibili: 'bilibili'
 };
+
+const currentSourceName = computed(() => {
+  const s = sources.find(item => item.value === currentType.value);
+  return s ? s.name : '';
+});
 
 // 交互逻辑
 const handleMouseEnter = () => {
@@ -265,7 +294,6 @@ onBeforeUnmount(() => {
 }
 
 /* 移动端适配 */
-/* 移动端适配 */
 @media (max-width: 768px) {
   .news-card {
     /* 移动端修复：强制宽度与布局防止坍塌 */
@@ -352,6 +380,7 @@ onBeforeUnmount(() => {
   pointer-events: none;
   transition: opacity 0.3s ease;
   box-sizing: border-box;
+  padding-bottom: 60px; /* 为 Dock 留出空间 */
 }
 
 .news-card.expanded .expanded-content {
@@ -417,49 +446,6 @@ h3 {
   align-items: center;
   gap: 6px;
   margin-right: auto;
-}
-
-/* Tabs 样式 */
-.tabs {
-  display: flex;
-  gap: 10px; /* 增加间距 */
-  background: rgba(0, 0, 0, 0.2);
-  padding: 4px;
-  border-radius: 8px;
-  margin-right: 24px;
-  overflow-x: auto; /* 允许横向滚动 */
-  scrollbar-width: none; /* Firefox 隐藏滚动条 */
-  -ms-overflow-style: none; /* IE 10+ */
-  white-space: nowrap;
-  /* 增加渐变遮罩提示 */
-  mask-image: linear-gradient(to right, black 90%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, black 90%, transparent 100%);
-}
-
-.tabs::-webkit-scrollbar {
-  display: none; /* Chrome Safari 隐藏滚动条 */
-}
-
-.tabs span {
-  font-size: 12px;
-  padding: 4px 8px;
-  cursor: pointer;
-  border-radius: 6px;
-  color: rgba(255, 255, 255, 0.7);
-  transition: all 0.2s;
-  min-width: 24px;
-  text-align: center;
-  flex-shrink: 0; /* 防止挤压 */
-}
-
-.tabs span:hover {
-  color: #fff;
-}
-
-.tabs span.active {
-  color: #333;
-  background: rgba(255, 255, 255, 0.9);
-  font-weight: 600;
 }
 
 /* 内容区域 */
@@ -565,6 +551,42 @@ h3 {
 
 .retry-btn:hover {
   background: rgba(255, 255, 255, 0.3);
+}
+
+/* 底部 Dock 栏 */
+.bottom-dock {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  padding: 12px 0;
+  background: rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.dock-icon {
+  width: 24px;
+  height: 24px;
+  opacity: 0.6;
+  filter: grayscale(100%);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
+}
+
+.dock-icon:hover {
+  opacity: 0.8;
+  transform: scale(1.1);
+}
+
+.dock-icon.active {
+  opacity: 1;
+  filter: grayscale(0%);
+  transform: scale(1.2);
+  /* 可选：添加选中时的发光效果或指示点 */
 }
 
 /* 动画 */
